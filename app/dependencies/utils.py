@@ -1,4 +1,6 @@
+import logging
 import os
+import time
 
 import openai
 from dotenv import load_dotenv
@@ -6,9 +8,7 @@ from dotenv import load_dotenv
 from app.internal.prompt import Initial_prompt
 
 load_dotenv()
-openai.api_key = os.environ.get(
-    "OPENAI_API_KEY"
-)  # supply your API key however you choose
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 class Chatbot:
@@ -21,9 +21,26 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        chat_completion_resp = await openai.ChatCompletion.acreate(
-            model="gpt-3.5-turbo-16k", temperature=0.1, messages=self.messages
-        )
+        retry_attempts = 2
+        retry_delay = 1  # delay in seconds
+
+        for attempt in range(retry_attempts):
+            try:
+                chat_completion_resp = await openai.ChatCompletion.acreate(
+                    model="gpt-3.5-turbo-16k",
+                    messages=self.messages,
+                    temperature=0.3,  # noqa
+                )
+                # if request is successful, break out of loop
+                break
+            except:  # noqa
+                logging.info("Attempt failed due to openai server")
+                if attempt + 1 == retry_attempts:
+                    return {
+                        "role": "system",
+                        "content": "",
+                    }
+                time.sleep(retry_delay)  # wait before retrying
 
         message_content = chat_completion_resp["choices"][0]["message"][
             "content"

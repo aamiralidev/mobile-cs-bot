@@ -1,12 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import chat
+from .routers import chat, webhook
 
 app = FastAPI()
 
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
+
 app.include_router(chat.router)
+app.include_router(webhook.router)
 
 
 @app.get("/")
