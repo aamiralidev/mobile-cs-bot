@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Interface</title>
+</head>
+<body>
+    <h1>Chatbot Interface</h1>
+    <div id="chatbox">
+        <!-- Chat messages will be added here. -->
+    </div>
+
+    <input type="text" id="inputMessage" placeholder="Type your message here...">
+    <button id="sendButton">Send</button>
+
+    <script>
+        async function sendMessage(user_input) {
+            const response = await fetch('http://localhost:8000/start_chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_input: user_input
+                })
+            });
+            return await response.json();
+        }
+
+        document.getElementById('sendButton').addEventListener('click', function() {
+            let message = document.getElementById('inputMessage').value;
+            document.getElementById('chatbox').innerHTML += `<p><b>User:</b> ${message}</p>`;
+            sendMessage(message).then(data => {
+                document.getElementById('chatbox').innerHTML += `<p><b>${data.role}:</b> ${data.content}</p>`;
+            });
+            document.getElementById('inputMessage').value = '';
+        });
+    </script>
+</body>
+</html>
