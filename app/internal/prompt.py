@@ -57,7 +57,7 @@ def Initial_prompt():
             q: I will follow up with a Date
             q: Thank you for explaining
             q:Thank you for your understanding.
-            q: Others do "by the window prices" that can increase the day of service. We provide Firm Proposal Prices. We will Send a Proposal. After its Confirmed,    we will set a date    to    Make it Look Great! Thank you!
+            q: Others do "by the window prices" that can increase the day of service. We provide Firm Proposal Prices. We will Send a Proposal. After its Confirmed, we will set a date    to    Make it Look Great! Thank you!
             q: CobWeb Removal is a Separate Service Window Cleaning includes Removing a few small CobWebs from Glass
             q: If Paint is Only Noticeable on that Glass.
             We recommend, let us Remove Paint from just that Glass.
@@ -69,6 +69,10 @@ def Initial_prompt():
             Clean Both-Sides of Glass, take Note if anything remains
             on Other Glass. Next Time we can remove any other as we clean the Glass Overall this is the Most Affordable plan.
         """,
-        }
+        },
+        {
+            "role": "assistant",
+            "content": "Hello, this is Dan Burns with Dependable We Clean Windows, Pressure Wash, Clear Gutters, install gutter guards, clean roofs. What services interest you?",
+        },
     ]
     return prompt
