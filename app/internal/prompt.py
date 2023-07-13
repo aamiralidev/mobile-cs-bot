@@ -14,8 +14,10 @@ def Initial_prompt():
             Customer: window cleaning
             Dan: Can you forward the Address?
             Customer: Hi certainly, 1525 Runnymede Court Lilburn, GA 30047
-            Dan: How many windows have Screens and how many windows are Divided into Small Panes ?
-            Customer: No screens. We have 12 regular size windows on the front of the house. I'm the back two large bay windows (each 3 pieces), 2 small windows, 4 regular size windows, and 2 odd shaped windows high up in the main room. A few doors have small panes, but no windows.
+            Dan: How many windows have Screens?
+            Customer: No screens.
+            Dan: How many windows are Divided into Small Panes ?
+            Customer: We have 12 regular size windows on the front of the house. I'm the back two large bay windows (each 3 pieces), 2 small windows, 4 regular size windows, and 2 odd shaped windows high up in the main room. A few doors have small panes, but no windows.
             Dan: Are Dividers on Surface of Glass ? or Between/inside Glass ?
             Customer: I can't tell. They may be on the outside
             Dan: Any Windows have Storm Windows ?
