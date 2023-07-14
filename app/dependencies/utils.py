@@ -29,7 +29,7 @@ class Chatbot:
                 chat_completion_resp = await openai.ChatCompletion.acreate(
                     model="gpt-3.5-turbo-16k",
                     messages=self.messages,
-                    temperature=0.3,  # noqa
+                    temperature=0,  # noqa
                 )
                 # if request is successful, break out of loop
                 break
