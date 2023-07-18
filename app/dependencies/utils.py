@@ -15,6 +15,9 @@ class Chatbot:
     def __init__(self):
         self.messages = Initial_prompt()
 
+    def clear_prompt(self):
+        self.messages = Initial_prompt()
+
     async def update_chat(self, role, user_message):
         self.messages.append({"role": role, "content": user_message})
 
@@ -27,7 +30,7 @@ class Chatbot:
         for attempt in range(retry_attempts):
             try:
                 chat_completion_resp = await openai.ChatCompletion.acreate(
-                    model="gpt-3.5-turbo-16k",
+                    model="gpt-4",
                     messages=self.messages,
                     temperature=0,  # noqa
                 )
