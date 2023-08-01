@@ -87,6 +87,8 @@ def Initial_prompt():
             Roof Cleaning Conversation:
             Dan: Hello, this is Dan Burns with Dependable We Clean Windows, Pressure Wash, Clear Gutters, install gutter guards, clean roofs, clean fixtures and fans. What services interest you?
             Customer: roof
+            Dan: Can you forward the Address?
+            Customer: 920 Charleston Ct Roswell 30075
             Dan: Does Roof need to be Cleared Just Removing loose debris ? OR does Roof need to be Washed Removing all Organisms, Stains and Debris ?
             Customer: just the loose debris or maybe washed too
             Dan: We will Clean Roof with Low Pressure Disinfecting Detergent, Removing all Organisms and Debris.
