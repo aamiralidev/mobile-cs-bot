@@ -11,6 +11,7 @@ load_dotenv()
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
+# flake8:noqa
 class Chatbot:
     def __init__(self):
         self.messages = Initial_prompt()
@@ -24,8 +25,8 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        retry_attempts = 2
-        retry_delay = 1  # delay in seconds
+        retry_attempts = 3
+        retry_delay = 3  # delay in seconds
 
         for attempt in range(retry_attempts):
             try:
@@ -37,11 +38,11 @@ class Chatbot:
                 # if request is successful, break out of loop
                 break
             except:  # noqa
-                logging.info("Attempt failed due to openai server")
                 if attempt + 1 == retry_attempts:
+                    logging.info("Attempt failed due to openai server")
                     return {
-                        "role": "system",
-                        "content": "",
+                        "role": "assistant",
+                        "content": "I'm sorry i'm just having network issue I'll get back to you soon",
                     }
                 time.sleep(retry_delay)  # wait before retrying
 
