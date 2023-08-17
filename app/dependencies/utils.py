@@ -26,7 +26,7 @@ class Chatbot:
         await self.update_chat("user", user_message)
 
         retry_attempts = 3
-        retry_delay = 3  # delay in seconds
+        retry_delay = 5  # delay in seconds
 
         for attempt in range(retry_attempts):
             try:
