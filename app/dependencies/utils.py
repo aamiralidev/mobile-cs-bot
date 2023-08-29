@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 import time
@@ -25,9 +26,11 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        retry_attempts = 5
+        retry_attempts = 3
         retry_delay = 5  # delay in seconds
 
+        # sleep for 1 second
+        await asyncio.sleep(1)
         for attempt in range(retry_attempts):
             try:
                 chat_completion_resp = await openai.ChatCompletion.acreate(
@@ -42,7 +45,7 @@ class Chatbot:
                     logging.info(
                         f"Attempt failed due to openai server. Error: {str(e)}"
                     )
-                    # print("exeptionssssssssss",str(e))
+                    # print("Exception: ",str(e))
                     return {
                         "role": "assistant",
                         "content": "I'm sorry i'm just having network issue I'll get back to you soon",
