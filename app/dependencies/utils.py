@@ -25,7 +25,7 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        retry_attempts = 3
+        retry_attempts = 5
         retry_delay = 5  # delay in seconds
 
         for attempt in range(retry_attempts):
@@ -37,9 +37,12 @@ class Chatbot:
                 )
                 # if request is successful, break out of loop
                 break
-            except:  # noqa
+            except Exception as e:
                 if attempt + 1 == retry_attempts:
-                    logging.info("Attempt failed due to openai server")
+                    logging.info(
+                        f"Attempt failed due to openai server. Error: {str(e)}"
+                    )
+                    # print("exeptionssssssssss",str(e))
                     return {
                         "role": "assistant",
                         "content": "I'm sorry i'm just having network issue I'll get back to you soon",
@@ -56,3 +59,7 @@ class Chatbot:
         response_dict = {"role": role, "content": message_content}
 
         return response_dict
+
+
+# Rate limit reached for 10KTPM-200RPM in organization org-OwEF47WmIVbizPha2QqABD0g on tokens per min.
+# Limit: 10000 / min. Please try again in 6ms. Contact us through our help center at help.openai.com if you continue to have issues.
