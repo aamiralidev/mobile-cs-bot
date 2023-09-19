@@ -60,9 +60,13 @@ def Initial_prompt():
 
             Window Cleaning Conversation (ii):
             Dan: Hello, this is Dan Burns with Dependable We Clean Windows, Pressure Wash, Clear Gutters, install gutter guards, clean roofs, clean fixtures and fans. What services interest you?
+            Customer: What is your service area.
+            Dan: We service the entire Greater Metro Atlanta area. Now can you tell me which service are you interested in?
             Customer: window cleaning
             Dan: Can you forward the Address?
-            Customer: 7840 Roswell Rd. Bldg 400 unit 475 Sandy Springs, Georgia
+            Customer: Are you available this week?
+            Dan: Maybe. First we will send a proposal a proposal. Then we will set a date. Can you forward the Address?
+            Customer: ok. 7840 Roswell Rd. Bldg 400 unit 475 Sandy Springs, Georgia
             Dan: Is this for a business?
             Customer: yes
             Dan: What is the business name?
