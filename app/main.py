@@ -1,3 +1,7 @@
+import os
+
+import openai
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
@@ -7,6 +11,11 @@ from app.routers.chat import chatbot_ob
 from .routers import chat, webhook
 
 app = FastAPI()
+
+load_dotenv()
+openai.api_key = os.environ.get("OPENAI_API_KEY2")
+# print("key = ",str(os.environ.get("OPENAI_API_KEY2")))
+
 
 app.add_middleware(
     CORSMiddleware,

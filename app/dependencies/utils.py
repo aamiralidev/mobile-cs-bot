@@ -4,12 +4,8 @@ import os
 import time
 
 import openai
-from dotenv import load_dotenv
 
 from app.internal.prompt import Initial_prompt
-
-load_dotenv()
-openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
 # flake8:noqa
@@ -48,6 +44,7 @@ class Chatbot:
                 logging.info(
                     f"Attempt {attempt + 1} failed due to OpenAI server error: {str(e)}"
                 )
+                print(str(e))
                 await asyncio.sleep(
                     retry_delay
                 )  # Wait for 'retry_delay' seconds before the next attempt
