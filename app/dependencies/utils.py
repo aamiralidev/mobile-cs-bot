@@ -26,11 +26,12 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        retry_attempts = 5
-        retry_delay = 4  # delay in seconds
+        retry_attempts = 4  # Changed to 4 retries
+        retry_delay = 4  # Delay in seconds
 
-        # sleep for 1 second
+        # Sleep for 1 second
         await asyncio.sleep(1)
+
         for attempt in range(retry_attempts):
             try:
                 chat_completion_resp = await openai.ChatCompletion.acreate(
@@ -38,7 +39,7 @@ class Chatbot:
                     messages=self.messages,
                     temperature=0,  # noqa
                 )
-                # if request is successful, break out of loop
+                # If request is successful, break out of loop
                 break
             except Exception as e:
                 if attempt + 1 == retry_attempts:
@@ -48,9 +49,11 @@ class Chatbot:
                     print("Exception: ", str(e))
                     return {
                         "role": "assistant",
-                        "content": "I'm sorry i'm just having network issue I'll get back to you soon",
+                        "content": "I'm sorry, I'm just having network issues. I'll get back to you soon.",
                     }
-                time.sleep(retry_delay)  # wait before retrying
+                await asyncio.sleep(
+                    retry_delay
+                )  # Wait before retrying, using asyncio's sleep
 
         message_content = chat_completion_resp["choices"][0]["message"][
             "content"
