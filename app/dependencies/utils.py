@@ -29,7 +29,7 @@ class Chatbot:
         retry_attempts = 5  # Number of retries
         retry_delay = 4  # Delay in seconds for each retry
 
-        await asyncio.sleep(1.5)  # Initial sleep of 1 second
+        await asyncio.sleep(2)  # Initial sleep of 1 second
 
         chat_completion_resp = None  # Initialize the response variable
 
