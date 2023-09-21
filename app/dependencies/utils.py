@@ -26,7 +26,7 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        retry_attempts = 4  # Number of retries
+        retry_attempts = 5  # Number of retries
         retry_delay = 4  # Delay in seconds for each retry
 
         await asyncio.sleep(1.5)  # Initial sleep of 1 second
