@@ -26,13 +26,14 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        retry_attempts = 4  # Changed to 4 retries
-        retry_delay = 4  # Delay in seconds
+        retry_attempts = 4  # Number of retries
+        retry_delay = 4  # Delay in seconds for each retry
 
-        # Sleep for 1 second
-        await asyncio.sleep(1)
+        await asyncio.sleep(1.5)  # Initial sleep of 1 second
 
-        chat_completion_resp = None  # Initialize variable
+        chat_completion_resp = None  # Initialize the response variable
+
+        total_wait_time = 0  # Initialize the total waiting time
 
         for attempt in range(retry_attempts):
             try:
@@ -41,28 +42,27 @@ class Chatbot:
                     messages=self.messages,
                     temperature=0,  # noqa
                 )
-                # If request is successful, break out of loop
+                # If the request is successful, break out of the loop
                 break
             except Exception as e:
                 logging.info(
-                    f"Attempt {attempt + 1} failed due to openai server. Error: {str(e)}"
-                )  # Log every exception
-                if attempt + 1 == retry_attempts:
-                    return {
-                        "role": "assistant",
-                        "content": "I'm sorry, I'm just having network issues. I'll get back to you soon.",
-                    }
-                await asyncio.sleep(retry_delay)  # Wait before retrying
+                    f"Attempt {attempt + 1} failed due to OpenAI server error: {str(e)}"
+                )
+                await asyncio.sleep(
+                    retry_delay
+                )  # Wait for 'retry_delay' seconds before the next attempt
+                total_wait_time += retry_delay  # Update the total waiting time
 
-        if chat_completion_resp is None:  # Check for uninitialized variable
+        # If all retry attempts fail, return an error message
+        if chat_completion_resp is None and total_wait_time >= (
+            retry_attempts * retry_delay
+        ):
             return {
                 "role": "assistant",
-                "content": "I'm sorry, I'm just having network issues. I'll get back to you soon.",
+                "content": "I'm sorry, I'm having network issues. I waited for 16 seconds but couldn't connect. I'll get back to you soon.",
             }
 
-        message_content = chat_completion_resp["choices"][0]["message"][
-            "content"
-        ]  # noqa
+        message_content = chat_completion_resp["choices"][0]["message"]["content"]
         role = chat_completion_resp["choices"][0]["message"]["role"]
 
         await self.update_chat(role, message_content)
