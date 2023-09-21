@@ -32,6 +32,8 @@ class Chatbot:
         # Sleep for 1 second
         await asyncio.sleep(1)
 
+        chat_completion_resp = None  # Initialize variable
+
         for attempt in range(retry_attempts):
             try:
                 chat_completion_resp = await openai.ChatCompletion.acreate(
@@ -42,18 +44,21 @@ class Chatbot:
                 # If request is successful, break out of loop
                 break
             except Exception as e:
+                logging.info(
+                    f"Attempt {attempt + 1} failed due to openai server. Error: {str(e)}"
+                )  # Log every exception
                 if attempt + 1 == retry_attempts:
-                    logging.info(
-                        f"Attempt failed due to openai server. Error: {str(e)}"
-                    )
-                    print("Exception: ", str(e))
                     return {
                         "role": "assistant",
                         "content": "I'm sorry, I'm just having network issues. I'll get back to you soon.",
                     }
-                await asyncio.sleep(
-                    retry_delay
-                )  # Wait before retrying, using asyncio's sleep
+                await asyncio.sleep(retry_delay)  # Wait before retrying
+
+        if chat_completion_resp is None:  # Check for uninitialized variable
+            return {
+                "role": "assistant",
+                "content": "I'm sorry, I'm just having network issues. I'll get back to you soon.",
+            }
 
         message_content = chat_completion_resp["choices"][0]["message"][
             "content"
