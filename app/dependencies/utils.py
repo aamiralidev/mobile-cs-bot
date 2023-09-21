@@ -59,7 +59,7 @@ class Chatbot:
         ):
             return {
                 "role": "assistant",
-                "content": "I'm sorry, I'm having network issues. I waited for 16 seconds but couldn't connect. I'll get back to you soon.",
+                "content": "I'm sorry, I'm having network issues. I'll get back to you soon.",
             }
 
         message_content = chat_completion_resp["choices"][0]["message"]["content"]
