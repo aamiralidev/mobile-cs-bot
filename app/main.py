@@ -13,8 +13,8 @@ from .routers import chat, webhook
 app = FastAPI()
 
 load_dotenv()
-openai.api_key = os.environ.get("OPENAI_API_KEY2")
-# print("key = ",str(os.environ.get("OPENAI_API_KEY2")))
+openai.api_key = os.environ.get("OPENAI_API_KEY")
+print("key = ", str(os.environ.get("OPENAI_API_KEY")))
 
 
 app.add_middleware(

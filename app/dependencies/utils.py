@@ -4,8 +4,16 @@ import os
 import time
 
 import openai
+import tiktoken
 
 from app.internal.prompt import Initial_prompt
+
+
+def num_tokens_from_string(string: str) -> int:
+    """Returns the number of tokens in a text string."""
+    encoding = tiktoken.get_encoding("cl100k_base")
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
 
 
 # flake8:noqa
@@ -22,10 +30,12 @@ class Chatbot:
     async def create_chat_completion(self, user_message):
         await self.update_chat("user", user_message)
 
-        retry_attempts = 5  # Number of retries
-        retry_delay = 4  # Delay in seconds for each retry
+        print("Number of Tokens = ", num_tokens_from_string(f"{self.messages}"))
 
-        await asyncio.sleep(2)  # Initial sleep of 1 second
+        retry_attempts = 4  # Number of retries
+        retry_delay = 10  # Delay in seconds for each retry
+
+        await asyncio.sleep(8)  # Initial sleep of 7 second
 
         chat_completion_resp = None  # Initialize the response variable
 
@@ -69,5 +79,4 @@ class Chatbot:
         return response_dict
 
 
-# Rate limit reached for 10KTPM-200RPM in organization org-OwEF47WmIVbizPha2QqABD0g on tokens per min.
-# Limit: 10000 / min. Please try again in 6ms. Contact us through our help center at help.openai.com if you continue to have issues.
+# Rate limit reached for 10KTPM-200RPM in organization org-OwEF47WmIVbizPha2QqABD0g on tokens per min. Limit: 10000 / min. Please try again in 6ms. Contact us through our help center at help.openai.com if you continue to have issues.
