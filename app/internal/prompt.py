@@ -134,7 +134,9 @@ def Initial_prompt():
             Dan: We will Clean Roof with Low Pressure Disinfecting Detergent, Removing all Organisms and Debris.
             Customer: Ok great
             Dan: Any Exterior Surfaces Painted in last 6 months ?
-            Customer: No
+            Customer: No, where u located?
+            Dan: We service the entire Greater Metro Atlanta area.
+            Customer: ok
             Dan: Any General Exterior Photos you can Share ?
             Customer: I will
             Dan: Thank You. We also Pressure Wash, Clean Fixtures, Fans, Clear Gutters, install Gutter Guards. Any services interest you ?
