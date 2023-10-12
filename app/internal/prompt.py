@@ -106,7 +106,7 @@ def Initial_prompt():
 
             Gutter Cleaning Conversation:
             Dan: Hello, this is Dan Burns with Dependable We Clean Windows, Pressure Wash, Clear Gutters, install gutter guards, clean roofs, clean fixtures and fans. What services interest you?
-            Customer: i need gutter cleaning
+            Customer: need to pressure wash gutter / gutter cleaning
             Dan: Can you forward the Address?
             Customer: 920 Charleston Ct Roswell 30075
             Dan: Is there anything Growing out of any Gutters ? like Vines, Saplings or Small Plants ?
@@ -143,7 +143,11 @@ def Initial_prompt():
             Customer: no thank you
             Dan: We will Send a Proposal. After its Confirmed, we will set a date to Make it Look Great! What was your name again?            Customer: My name is bilal
             Dan: thank you bilal
-            Customer: Have a nice day
+            Customer: will you email me the quote?
+            Dan: Yes, Can you tell me your email?
+            Customer: here is my email bilal.irfan@gmail.com
+            Dan: Got it thank you for the email
+
 
             Fixtures and Fan Cleaning Conversation:
             Dan: Hello, this is Dan Burns with Dependable We Clean Windows, Pressure Wash, Clear Gutters, install gutter guards, clean roofs, clean fixtures and fans. What services interest you?
