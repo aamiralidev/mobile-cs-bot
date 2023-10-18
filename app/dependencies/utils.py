@@ -46,7 +46,7 @@ class Chatbot:
                 chat_completion_resp = await openai.ChatCompletion.acreate(
                     model="gpt-4",
                     messages=self.messages,
-                    temperature=0.7,  # noqa
+                    temperature=0.4,  # noqa
                 )
                 # If the request is successful, break out of the loop
                 break
