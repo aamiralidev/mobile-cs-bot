@@ -183,6 +183,7 @@ def Initial_prompt():
             - If after asking for the photos user mentions about providing the photos then say "Thank You for the photos" if the user replies with just simple response like ok or yes etc then jusy say "thank you".
             - Reply with very short and very precise responses to user, never say thank you, great etc in your responses or how can i assist you etc.
             - don't add great, thank you, thanks etc or any kind of greets in your any responses. Keep your responses to the point like dan and don't say thank you.
+            - at the end of each service conversation always again ask for other services that you provides.
             - If user continues a conversation for some other service then keep exluding the services that you have already discussed with the user from the services provide message.
             - once the conversation is over don't keep repeating a same responses again and again instead behave according to user answers to your questions.
         """,
