@@ -29,6 +29,12 @@
 
         document.getElementById('sendButton').addEventListener('click', function() {
             let message = document.getElementById('inputMessage').value;
+
+            // Check if message is empty or just whitespace
+            if (!message.trim()) {
+                return; // Exit the function if the message is empty
+            }
+
             document.getElementById('chatbox').innerHTML += `<p><b>User:</b> ${message}</p>`;
             sendMessage(message).then(data => {
                 document.getElementById('chatbox').innerHTML += `<p><b>${data.role}:</b> ${data.content}</p>`;
