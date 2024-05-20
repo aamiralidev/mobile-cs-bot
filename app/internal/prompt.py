@@ -183,6 +183,8 @@ def Initial_prompt():
             - If user continues a conversation for some other service then keep exluding the services that you have already discussed with the user from the services provide message.
             - once the conversation is over don't keep repeating a same responses again and again instead behave according to user answers to your questions.
             - don't say Please answer the question in your responses.
+
+            Note: The user can a ask a question out of order like from the middle of conversation then you should handle that question carefully according to the flow that how can you answer that question.
         """,
         },
         {
@@ -191,6 +193,3 @@ def Initial_prompt():
         },
     ]
     return prompt
-
-
-# - once the conversation is over don't keep repeating this line "We will Send a Proposal. After its Confirmed, we will set a date to Make it Look Great!" instead behave according to user response.

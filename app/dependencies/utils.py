@@ -1,82 +1,58 @@
 import asyncio
 import logging
-import os
-import time
 
 import openai
-import tiktoken
 
 from app.internal.prompt import Initial_prompt
 
 
-def num_tokens_from_string(string: str) -> int:
-    """Returns the number of tokens in a text string."""
-    encoding = tiktoken.get_encoding("cl100k_base")
-    num_tokens = len(encoding.encode(string))
-    return num_tokens
+async def create_chat_completion(user_message):
+    messages = Initial_prompt()
 
+    messages.append({"role": "user", "content": user_message})
 
-# flake8:noqa
-class Chatbot:
-    def __init__(self):
-        self.messages = Initial_prompt()
+    retry_attempts = 2  # Number of retries
+    retry_delay = 2  # Delay in seconds for each retry
 
-    def clear_prompt(self):
-        self.messages = Initial_prompt()
+    await asyncio.sleep(8)  # Initial sleep of 7 second
 
-    async def update_chat(self, role, user_message):
-        self.messages.append({"role": role, "content": user_message})
+    chat_completion_resp = None  # Initialize the response variable
 
-    async def create_chat_completion(self, user_message):
-        await self.update_chat("user", user_message)
+    total_wait_time = 0  # Initialize the total waiting time
 
-        print("Number of Tokens = ", num_tokens_from_string(f"{self.messages}"))
+    for attempt in range(retry_attempts):
+        try:
+            chat_completion_resp = await openai.ChatCompletion.acreate(
+                model="gpt-4-turbo",
+                messages=messages,
+                temperature=0,  # noqa
+            )
+            # If the request is successful, break out of the loop
+            break
+        except Exception as e:
+            logging.info(
+                f"""Attempt {attempt + 1} failed due to OpenAI server error:
+                {str(e)}"""
+            )
+            print(str(e))
+            await asyncio.sleep(
+                retry_delay
+            )  # Wait for 'retry_delay' seconds before the next attempt
+            total_wait_time += retry_delay  # Update the total waiting time
 
-        retry_attempts = 4  # Number of retries
-        retry_delay = 10  # Delay in seconds for each retry
+    # If all retry attempts fail, return an error message
+    if chat_completion_resp is None and total_wait_time >= (
+        retry_attempts * retry_delay
+    ):
+        return {
+            "role": "assistant",
+            "content": """I'm sorry, I'm having network issues.
+            I'll get back to you soon.""",
+        }
 
-        await asyncio.sleep(8)  # Initial sleep of 7 second
+    message_content = chat_completion_resp["choices"][0]["message"]["content"]
+    role = chat_completion_resp["choices"][0]["message"]["role"]
 
-        chat_completion_resp = None  # Initialize the response variable
+    response_dict = {"role": role, "content": message_content}
 
-        total_wait_time = 0  # Initialize the total waiting time
-
-        for attempt in range(retry_attempts):
-            try:
-                chat_completion_resp = await openai.ChatCompletion.acreate(
-                    model="gpt-4",
-                    messages=self.messages,
-                    temperature=0.4,  # noqa
-                )
-                # If the request is successful, break out of the loop
-                break
-            except Exception as e:
-                logging.info(
-                    f"Attempt {attempt + 1} failed due to OpenAI server error: {str(e)}"
-                )
-                print(str(e))
-                await asyncio.sleep(
-                    retry_delay
-                )  # Wait for 'retry_delay' seconds before the next attempt
-                total_wait_time += retry_delay  # Update the total waiting time
-
-        # If all retry attempts fail, return an error message
-        if chat_completion_resp is None and total_wait_time >= (
-            retry_attempts * retry_delay
-        ):
-            return {
-                "role": "assistant",
-                "content": "I'm sorry, I'm having network issues. I'll get back to you soon.",
-            }
-
-        message_content = chat_completion_resp["choices"][0]["message"]["content"]
-        role = chat_completion_resp["choices"][0]["message"]["role"]
-
-        await self.update_chat(role, message_content)
-
-        response_dict = {"role": role, "content": message_content}
-
-        return response_dict
-
-
-# Rate limit reached for 10KTPM-200RPM in organization org-OwEF47WmIVbizPha2QqABD0g on tokens per min. Limit: 10000 / min. Please try again in 6ms. Contact us through our help center at help.openai.com if you continue to have issues.
+    return response_dict
