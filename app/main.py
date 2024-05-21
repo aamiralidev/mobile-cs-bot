@@ -1,4 +1,6 @@
+import logging
 import os
+from contextlib import asynccontextmanager
 
 import openai
 from dotenv import load_dotenv
@@ -6,13 +8,38 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 
+from app.dependencies import database
+
 from .routers import chat, webhook
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logging.info(" Database connection Has Started Successfully")
+
+    # Initialize database connection
+    await database.init_db()
+
+    yield  # This point is where the FastAPI application runs
+
+    # Close database connection
+    await database.close_db_connection()
+
+    logging.info(" Database connection closed Successfully")
+
 
 load_dotenv()
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 print("key = ", str(os.environ.get("OPENAI_API_KEY")))
+
+
+app = FastAPI(lifespan=lifespan)
+
+
+# Dependency
+async def get_db():
+    async with database.AsyncSessionLocal() as session:
+        yield session
 
 
 app.add_middleware(
