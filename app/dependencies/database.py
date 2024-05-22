@@ -33,3 +33,9 @@ async def init_db():
 
 async def close_db_connection():
     await engine.dispose()
+
+
+# Dependency
+async def get_db():
+    async with AsyncSessionLocal() as session:
+        yield session

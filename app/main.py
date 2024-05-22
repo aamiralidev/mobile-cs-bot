@@ -36,12 +36,6 @@ print("key = ", str(os.environ.get("OPENAI_API_KEY")))
 app = FastAPI(lifespan=lifespan)
 
 
-# Dependency
-async def get_db():
-    async with database.AsyncSessionLocal() as session:
-        yield session
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -64,4 +58,4 @@ async def chat_interface(request: Request):
 
 @app.get("/")
 async def root():
-    return "8*8 Work-api"
+    return "Dan Chatbot api"
