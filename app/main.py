@@ -15,7 +15,7 @@ from .routers import chat, webhook
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logging.info(" Database connection Has Started Successfully")
+    logging.info("Database connection has started successfully")
 
     # Initialize database connection
     await database.init_db()
@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
     # Close database connection
     await database.close_db_connection()
 
-    logging.info(" Database connection closed Successfully")
+    logging.info("Database connection closed successfully")
 
 
 load_dotenv()

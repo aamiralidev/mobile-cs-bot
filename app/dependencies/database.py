@@ -18,12 +18,10 @@ db_port = os.getenv("DB_PORT")
 SQLALCHEMY_PostgreSQL_DATABASE_URL = f"postgresql+asyncpg://{db_user}:{db_password}@{db_host}:{db_port}/{db_user}"  # noqa
 
 
-engine = create_async_engine(SQLALCHEMY_PostgreSQL_DATABASE_URL)
-
-# Create a sessionmaker instance
+engine = create_async_engine(SQLALCHEMY_PostgreSQL_DATABASE_URL, echo=True)
 AsyncSessionLocal = sessionmaker(
-    engine, expire_on_commit=False, class_=AsyncSession
-)  # noqa
+    bind=engine, class_=AsyncSession, expire_on_commit=False
+)
 
 
 async def init_db():

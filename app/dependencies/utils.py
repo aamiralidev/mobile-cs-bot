@@ -3,21 +3,14 @@ import logging
 
 import openai
 
-from app.internal.prompt import Initial_prompt
 
-
-async def create_chat_completion(user_message):
-    messages = Initial_prompt()
-
-    messages.append({"role": "user", "content": user_message})
-
+async def create_chat_completion(messages):
     retry_attempts = 2  # Number of retries
     retry_delay = 2  # Delay in seconds for each retry
 
-    await asyncio.sleep(8)  # Initial sleep of 7 second
+    await asyncio.sleep(8)  # Initial sleep of 8 seconds
 
     chat_completion_resp = None  # Initialize the response variable
-
     total_wait_time = 0  # Initialize the total waiting time
 
     for attempt in range(retry_attempts):
@@ -34,7 +27,6 @@ async def create_chat_completion(user_message):
                 f"""Attempt {attempt + 1} failed due to OpenAI server error:
                 {str(e)}"""
             )
-            print(str(e))
             await asyncio.sleep(
                 retry_delay
             )  # Wait for 'retry_delay' seconds before the next attempt
@@ -46,8 +38,7 @@ async def create_chat_completion(user_message):
     ):
         return {
             "role": "assistant",
-            "content": """I'm sorry, I'm having network issues.
-            I'll get back to you soon.""",
+            "content": """No response from the server""",
         }
 
     message_content = chat_completion_resp["choices"][0]["message"]["content"]
