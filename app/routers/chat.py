@@ -1,15 +1,15 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+from fastapi import APIRouter, Request
 
 from app.dependencies.utils import create_chat_completion
 
 router = APIRouter()
 
 
-class ChatInput(BaseModel):
-    user_input: str
+@router.post("/recieve_message")
+async def recieve_msg(request: Request):
+    form_data = await request.form()
 
+    message = form_data.get("Body", None)
 
-@router.post("/start_chat")
-async def start_chat(chat_input: ChatInput):
-    return await create_chat_completion(chat_input.user_input)
+    print("Received message: ", message)
+    return await create_chat_completion(message)
