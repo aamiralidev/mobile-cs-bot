@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 import psycopg2
@@ -59,7 +60,6 @@ async def recieve_msg(request: Request):
                 "UPDATE conversation_entries SET messages = %s WHERE phone_number = %s",  # noqa
                 (json.dumps(conversation_messages), from_number),
             )
-            print("Appending to existing conversation")
         else:
             # Create a new conversation
             initial_prompt = Initial_prompt()
@@ -70,7 +70,6 @@ async def recieve_msg(request: Request):
                 "INSERT INTO conversation_entries (phone_number, messages) VALUES (%s, %s)",  # noqa
                 (from_number, json.dumps(conversation_messages)),
             )
-            print("Creating new conversation")
 
         conn.commit()
 
@@ -86,13 +85,11 @@ async def recieve_msg(request: Request):
 
         conn.commit()
 
-        print("Final conversation state:", conversation_messages)
-
         return response_dict
 
     except Exception as e:
         conn.rollback()
-        print(f"Error: {e}")
+        logging.error(f"Error: {e}")
         return {"error": "An error occurred while processing the message"}
 
     finally:
