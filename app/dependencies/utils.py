@@ -1,54 +1,49 @@
+import asyncio
 import logging
-import os
-import time
 
 import openai
-from dotenv import load_dotenv
-
-from app.internal.prompt import Initial_prompt
-
-load_dotenv()
-openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
-class Chatbot:
-    def __init__(self):
-        self.messages = Initial_prompt()
+async def create_chat_completion(messages):
+    retry_attempts = 2  # Number of retries
+    retry_delay = 2  # Delay in seconds for each retry
 
-    async def update_chat(self, role, user_message):
-        self.messages.append({"role": role, "content": user_message})
+    await asyncio.sleep(8)  # Initial sleep of 8 seconds
 
-    async def create_chat_completion(self, user_message):
-        await self.update_chat("user", user_message)
+    chat_completion_resp = None  # Initialize the response variable
+    total_wait_time = 0  # Initialize the total waiting time
 
-        retry_attempts = 2
-        retry_delay = 1  # delay in seconds
+    for attempt in range(retry_attempts):
+        try:
+            chat_completion_resp = await openai.ChatCompletion.acreate(
+                model="gpt-4-turbo",
+                messages=messages,
+                temperature=0,  # noqa
+            )
+            # If the request is successful, break out of the loop
+            break
+        except Exception as e:
+            logging.info(
+                f"""Attempt {attempt + 1} failed due to OpenAI server error:
+                {str(e)}"""
+            )
+            await asyncio.sleep(
+                retry_delay
+            )  # Wait for 'retry_delay' seconds before the next attempt
+            total_wait_time += retry_delay  # Update the total waiting time
 
-        for attempt in range(retry_attempts):
-            try:
-                chat_completion_resp = await openai.ChatCompletion.acreate(
-                    model="gpt-3.5-turbo-16k",
-                    messages=self.messages,
-                    temperature=0.3,  # noqa
-                )
-                # if request is successful, break out of loop
-                break
-            except:  # noqa
-                logging.info("Attempt failed due to openai server")
-                if attempt + 1 == retry_attempts:
-                    return {
-                        "role": "system",
-                        "content": "",
-                    }
-                time.sleep(retry_delay)  # wait before retrying
+    # If all retry attempts fail, return an error message
+    if chat_completion_resp is None and total_wait_time >= (
+        retry_attempts * retry_delay
+    ):
+        return {
+            "role": "assistant",
+            "content": """No response from the server""",
+        }
 
-        message_content = chat_completion_resp["choices"][0]["message"][
-            "content"
-        ]  # noqa
-        role = chat_completion_resp["choices"][0]["message"]["role"]
+    message_content = chat_completion_resp["choices"][0]["message"]["content"]
+    role = chat_completion_resp["choices"][0]["message"]["role"]
 
-        await self.update_chat(role, message_content)
+    response_dict = {"role": role, "content": message_content}
 
-        response_dict = {"role": role, "content": message_content}
-
-        return response_dict
+    return response_dict
