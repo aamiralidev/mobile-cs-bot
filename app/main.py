@@ -10,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 
 from app.dependencies import database
 
-from .routers import chat, webhook
+from .routers import chat
 
 
 @asynccontextmanager
@@ -45,7 +45,6 @@ app.add_middleware(
 )
 
 app.include_router(chat.router)
-app.include_router(webhook.router)
 
 
 templates = Jinja2Templates(directory="app/templates")
