@@ -46,4 +46,4 @@ async def create_chat_completion(messages):
 
     response_dict = {"role": role, "content": message_content}
 
-    return response_dict
+    return message_content, response_dict
