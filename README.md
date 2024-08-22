@@ -8,7 +8,7 @@ To set up the project, follow these steps:
     <li>Then <code>docker compose up</code></li>
 </ol>
 
-<p>The project is accessible on port <code>9000</code> and on the endpoint <code>/recieve_message</code></p>
+<p>The project is accessible on port <code>9000</code> and on the endpoint <code>/recieve/sms</code></p>
 
 <h2>Endpoint Structure</h2>
 <p>The current structure that the endpoint receives is as follows:</p>
@@ -22,8 +22,8 @@ To set up the project, follow these steps:
 <pre>
 <code>
 var formdata = new FormData();
-formdata.append("body", "Hi, A sample message");
-formdata.append("from", "0300");
+formdata.append("Body", "Hi, A sample message");
+formdata.append("From", "0300");
 </code>
 </pre>
 
