@@ -14,8 +14,8 @@ To set up the project, follow these steps:
 <p>The current structure that the endpoint receives is as follows:</p>
 
 <ul>
-    <li><code>body</code> should contain the message</li>
-    <li><code>from</code> should contain the number of the message source</li>
+    <li><code>Body</code> should contain the message</li>
+    <li><code>From</code> should contain the number or unique key of the message source</li>
 </ul>
 
 <h3>Sample Request</h3>
