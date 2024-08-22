@@ -84,6 +84,11 @@ async def incoming_sms(
             conversation_messages
         )
 
+        if message_content == "Exception":
+            return PlainTextResponse(
+                "Request Failed", media_type="application/xml"
+            )  # noqa
+
         # Append the bot response to the conversation
         conversation_messages.append(response_dict)
         cur.execute(

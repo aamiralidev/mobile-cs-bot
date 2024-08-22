@@ -36,7 +36,7 @@ async def create_chat_completion(messages):
     if chat_completion_resp is None and total_wait_time >= (
         retry_attempts * retry_delay
     ):
-        return {
+        return "Exception", {
             "role": "assistant",
             "content": """No response from the server""",
         }
@@ -45,5 +45,7 @@ async def create_chat_completion(messages):
     role = chat_completion_resp["choices"][0]["message"]["role"]
 
     response_dict = {"role": role, "content": message_content}
+
+    print("respopse = ", response_dict)
 
     return message_content, response_dict
