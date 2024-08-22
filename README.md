@@ -28,3 +28,5 @@ formdata.append("From", "0300");
 </pre>
 
 <p>Make sure to create a <code>.env</code> file in the root folder and place the content in it like <code>env.sample</code>.</p>
+
+<p><strong>To Furthur understand the project you can open the documentation.html file present in this repository.</strong></p>
