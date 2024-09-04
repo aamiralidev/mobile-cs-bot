@@ -16,9 +16,9 @@ async def create_chat_completion(messages):
     for attempt in range(retry_attempts):
         try:
             chat_completion_resp = await openai.ChatCompletion.acreate(
-                model="gpt-4-turbo",
+                model="gpt-4o-mini",
                 messages=messages,
-                temperature=0,  # noqa
+                temperature=0.7,  # noqa
             )
             # If the request is successful, break out of the loop
             break

@@ -66,6 +66,7 @@ async def incoming_sms(
                 "UPDATE conversation_entries SET messages = %s WHERE phone_number = %s",  # noqa
                 (json.dumps(conversation_messages), from_number),
             )
+            print("appending")
         else:
             # Create a new conversation
             initial_prompt = Initial_prompt()
@@ -76,6 +77,7 @@ async def incoming_sms(
                 "INSERT INTO conversation_entries (phone_number, messages) VALUES (%s, %s)",  # noqa
                 (from_number, json.dumps(conversation_messages)),
             )
+            print("creating new")
 
         conn.commit()
 
